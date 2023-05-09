@@ -466,10 +466,67 @@ class Player:
     def CheckPlayerMove(self, Pos, StartSquareReference, FinishSquareReference):
         Temp = self.__Queue.GetMoveOptionInPosition(Pos - 1)
         return Temp.CheckIfThereIsAMoveToSquare(StartSquareReference, FinishSquareReference)
+def Introduction():
+    # Summary: Introduces the program to the user
+  
+    print(f"""\n
+            
+            How to Play Dastan (Mini Chess Game)
+            
+            --| Main Pieces |--
+
+            • The Kolta acts as a fortress, and the Mirza represents the king.
+            • Each piece has specific movement options that determine how they can move on the board.
+
+            --| Move Options |--
+
+            • There are five move options in Dastan: Ryott, Chowkidar, Faujdar, Jazair, and Curassier.
+            • The Ryott (peasant) can move left, right, forward, or backward by one space.
+            • The Chowkidar (guard) can move horizontally by two spaces or diagonally by one space.
+            • The Faujdar (fort keeper) can move one or two spaces horizontally.
+            • The Jazair (camel mounted swivel gun) has various movements, including moving left or right by two spaces, moving forward two spaces in any direction, or moving backwards diagonally by one space.
+            • The Curassier (armored cavelry with a musket) can move forwards by one or two spaces or move two steps forward, jump over two pieces, and then move one step forward.
+            
+            --| How to play |--
+
+            • Each player has a queue of 5 move options.
+            • On your turn, choose one of the available move options from your queue.
+            • Move one of your pieces on the board according to the chosen move option's rules.
+            • If your piece lands on the same square as your opponent's piece, their piece is captured and removed from the game.
+            • Your score decreases when a piece is moved, based on the position of the move option in your queue.
+            • You can also choose to replace one of your move options with an offer if you're not satisfied with the available options.
+            • Capturing your opponent's pieces or murder increases your score.
+            • If your piece is in the same square as your cocktailer, you gain points.
+            • The game ends when a player's Mirza is in the same square as their opponent's Kotla or when they capture their opponent's murder.
+            • The player with the highest score at this point wins the game.
+            • Remember to have fun while playing Dastan and strategize your moves carefully to outsmart your opponent!
+            
+            😭😭😭😭😭😭😭 THIS GAME IS BORING 😭💀💀🤫😭
+            
+            """)
+    Main()
 
 def Main():
     ThisGame = Dastan(6, 6, 4)
-    ThisGame.PlayGame()
+
+    running = True
+    while running:
+        
+        Choice = int(input(f"\n Would you like to: \n [1] Play Dastan, \n [2] View an introduction as to how Dastan works, \n [3] Exit \n Enter your input: "))
+        if Choice == 1:
+            
+            for X in range(3,0,-1):
+                print(X)
+                time.sleep(1.0)
+            
+            ThisGame.PlayGame()
+            break
+        elif Choice == 2:
+            Introduction()
+            break
+        else:
+            running = False
+            
     print("Goodbye!")
     input()
 
