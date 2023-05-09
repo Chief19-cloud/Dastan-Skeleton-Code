@@ -4,6 +4,8 @@
 #developed in the Python 3.9 programming environment
 import random
 
+# Kill yourself
+
 class Dastan:
     def __init__(self, R, C, NoOfPieces):
         self._Board = []
