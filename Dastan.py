@@ -2,15 +2,21 @@
 #this code should be used in conjunction with the Preliminary Material
 #written by the AQA Programmer Team
 #developed in the Python 3.9 programming environment
+
 import random
+import time
 
 class Dastan:
+
     def __init__(self, R, C, NoOfPieces):
+        
+        """ Summary: Initialise the attributes to be used """
+        
         self._Board = []
         self._Players = []
         self._MoveOptionOffer = []
-        self._Players.append(Player("Player One", 1))
-        self._Players.append(Player("Player Two", -1))
+        self._Players.append( Player("Player One", 1) )
+        self._Players.append( Player("Player Two", -1) )
         self.__CreateMoveOptions()
         self._NoOfRows = R
         self._NoOfColumns = C
@@ -21,18 +27,31 @@ class Dastan:
         self._CurrentPlayer = self._Players[0]
 
     def __DisplayBoard(self):
+        
+        """ Summary: Displays the Rows and Columns for the Board
+        """
         print("\n" + "   ", end="")
+        
+        #Displays Column
         for Column in range(1, self._NoOfColumns + 1):
             print(str(Column) + "  ", end="")
         print("\n" + "  ", end="")
+        
+        #Displays '---'
         for Count in range(1, self._NoOfColumns + 1):
             print("---", end="")
         print("-")
+
+        #Displays Rows
         for Row in range(1, self._NoOfRows + 1):
             print(str(Row) + " ", end="")
+            
+            #Displays '|' in line with each square
             for Column in range(1, self._NoOfColumns + 1):
                 Index = self.__GetIndexOfSquare(Row * 10 + Column)
                 print("|" + self._Board[Index].GetSymbol(), end="")
+                
+                #Displays '!' or '"' depending on symbol of Player 1 or Player 2
                 PieceInSquare = self._Board[Index].GetPieceInSquare()
                 if PieceInSquare is None:
                     print(" ", end="")
@@ -40,12 +59,17 @@ class Dastan:
                     print(PieceInSquare.GetSymbol(), end="")
             print("|")
         print("  -", end="")
+        
+        #Displays '---' at the End
         for Column in range(1, self._NoOfColumns + 1):
             print("---", end="")
         print()
         print()
 
     def __DisplayState(self):
+        
+        """ Summary: Displays the state of what happens for a player's particular turn """
+        
         self.__DisplayBoard()
         print("Move option offer: " + self._MoveOptionOffer[self._MoveOptionOfferPosition])
         print()
@@ -53,12 +77,21 @@ class Dastan:
         print("Turn: " + self._CurrentPlayer.GetName())
         print()
 
+    # I DON'T UNDERSTAND THIS METHOD()!!! 😭
     def __GetIndexOfSquare(self, SquareReference):
+        """ 
+        Summary: Gets the index of a square INSIDE the 6x6 grid to use for Column creation,
+        Row creation and symbol placement for each players. 
+        """
         Row = SquareReference // 10
         Col = SquareReference % 10
         return (Row - 1) * self._NoOfColumns + (Col - 1)
 
+    # Add ONTO THIS 👍
     def __CheckSquareInBounds(self, SquareReference):
+        
+        """ Summary: To check the user input if it fits within the Bounds of the 6x6 grid. """
+        
         Row = SquareReference // 10
         Col = SquareReference % 10
         if Row < 1 or Row > self._NoOfRows:
@@ -68,7 +101,11 @@ class Dastan:
         else:
             return True
 
+    # Add ONTO THIS 👍
     def __CheckSquareIsValid(self, SquareReference, StartSquare):
+        
+        """ Summary: To check the user input if it is valid inside of the 6x6 grid. """
+        
         if not self.__CheckSquareInBounds(SquareReference):
             return False
         PieceInSquare = self._Board[self.__GetIndexOfSquare(SquareReference)].GetPieceInSquare()
@@ -466,6 +503,7 @@ class Player:
     def CheckPlayerMove(self, Pos, StartSquareReference, FinishSquareReference):
         Temp = self.__Queue.GetMoveOptionInPosition(Pos - 1)
         return Temp.CheckIfThereIsAMoveToSquare(StartSquareReference, FinishSquareReference)
+
 def Introduction():
     # Summary: Introduces the program to the user
   
@@ -532,3 +570,12 @@ def Main():
 
 if __name__ == "__main__":
     Main()
+    
+    
+    """
+    
+    Version 1.0.[N]: (Stating Consisely what we did )
+    
+    Description: __Just describe___
+    
+    """
