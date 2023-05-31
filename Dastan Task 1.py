@@ -128,14 +128,33 @@ class Dastan:
         return not (Player1HasMirza and Player2HasMirza)
 
     def __GetSquareReference(self, Description):
-        SelectedSquare = int(input("Enter the square " + Description + " (row number followed by column number): "))
-        return SelectedSquare
+        """ Dastan Task 6 """
+        while True:
+          try:
+            SelectedSquare = int(input("Enter the square " + Description + " (row number followed by column number): "))
+            return SelectedSquare
+            break
+          except ValueError:
+            print(f"\n You entered an invalid square. Please try again")
+        """ Dastan Task 6 """
 
     def __UseMoveOptionOffer(self):
-        ReplaceChoice = int(input("Choose the move option from your queue to replace (1 to 5): "))
-        self._CurrentPlayer.UpdateMoveOptionQueueWithOffer(ReplaceChoice - 1, self.__CreateMoveOption(self._MoveOptionOffer[self._MoveOptionOfferPosition], self._CurrentPlayer.GetDirection()))
-        self._CurrentPlayer.ChangeScore(-(10 - (ReplaceChoice * 2)))
-        self._MoveOptionOfferPosition = random.randint(0, 4)
+
+      """ Dastan Task 6 """
+      
+      while True:
+        try:
+          ReplaceChoice = int(input("Choose the move option from your queue to replace (1 to 5): "))
+          self._CurrentPlayer.UpdateMoveOptionQueueWithOffer
+          (ReplaceChoice - 1,         
+          self.__CreateMoveOption(self._MoveOptionOffer[self._MoveOptionOfferPosition], self._CurrentPlayer.GetDirection()))
+          self._CurrentPlayer.ChangeScore(-(10 - (ReplaceChoice * 2)))
+          self._MoveOptionOfferPosition = random.randint(0, 4)
+          break
+        except ValueError:
+          print(f"\n You entered an invalid input. Please try again.")
+          
+      """ Dastan Task 6 """
 
     def __GetPointsForOccupancyByPlayer(self, CurrentPlayer):
         ScoreAdjustment = 0
@@ -151,17 +170,31 @@ class Dastan:
             return self._Board[self.__GetIndexOfSquare(FinishSquareReference)].GetPieceInSquare().GetPointsIfCaptured()
         return 0
 
+    """ Dastan Task 4 """
+
+    def AwardWafr(self):
+      Chance = random.randint(1,4)
+      if Chance == 3:
+        return Chance
+
+    """ Dastan Task 5 """
+  
     def PlayGame(self):
         GameOver = False
         while not GameOver:
             self.__DisplayState()
+          # Call AwardWafr method()
             SquareIsValid = False
             Choice = 0
+            
             while Choice < 1 or Choice > 3:
+              try:
                 Choice = int(input("Choose move option to use from queue (1 to 3) or 9 to take the offer: "))
                 if Choice == 9:
                     self.__UseMoveOptionOffer()
                     self.__DisplayState()
+              except ValueError:
+                print(f"\n You entered an invalid number. Please try again.")
             while not SquareIsValid:
                 StartSquareReference = self.__GetSquareReference("containing the piece to move")
                 SquareIsValid = self.__CheckSquareIsValid(StartSquareReference, True)
@@ -388,7 +421,7 @@ class Dastan:
         #2
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faris", -1))
         #3
-        self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faris", -1))
+        self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("sarukh", -1))
 
 class Piece:
     def __init__(self, T, B, P, S):
@@ -525,7 +558,19 @@ class Player:
         self.__Name = N
         self.__Direction = D
         self.__Queue = MoveOptionQueue()
+      
+        """ Dastan Task 4 """
+        #4 
+        self.__WafrAwarded = False
 
+    def GetWafrAwarded(self):
+      return self.__WafrAwarded 
+
+    def SetWafrAwarded(self, Condition):
+      self.__WafrAwarded = Condition
+
+    """ Dastan Task 4 """
+  
     def SameAs(self, APlayer):
         if APlayer is None:
             return False
