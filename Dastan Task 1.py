@@ -6,37 +6,52 @@
 import random
 
 class Dastan:
-
     def __init__(self, R, C, NoOfPieces):
         self._Board = []
         self._Players = []
         self._MoveOptionOffer = []
+        self.CreateCustomPlayers()
       
-        self.CreateCustomPlayers() # 1
-        
+        # self._Players.append(Player("Player One", 1))
+        # self._Players.append(Player("Player Two", -1))
         self.__CreateMoveOptions()
         self._NoOfRows = R
         self._NoOfColumns = C
         self._MoveOptionOfferPosition = 0
         self.__CreateMoveOptionOffer()
-
         self.__CreateBoard()
         self.__CreatePieces(NoOfPieces)
         self._CurrentPlayer = self._Players[0]
 
+
     def CreateCustomPlayers(self):
-      User1Input = ""
-      User2Input = ""
-      
-      while User1Input == User2Input:
+    
+        Player1Input = ""
+        Player2Input = ""
 
-        User1Input = input(f"\n User 1, Enter your player name: ")
-        User2Input = input(f"\n User 2, Enter your player name: ")
-        
-      print(f"\n Welcome, {User1Input} and {User2Input} to Dastan! Let's Commence!")
-
-      self._Players.append(Player(User1Input, 1))
-      self._Players.append(Player(User2Input, -1))
+        namesIdentical = True
+        namesEmpty = True
+    
+        while namesIdentical == True or namesEmpty == True:
+            Player1Input = input("Player 1, enter your name: ")
+            Player2Input = input("Player 2, enter your name: ")
+  
+            if Player1Input == Player2Input:
+                namesIdentical = True
+                print("Identical names not allowed")
+            else:
+                namesIdentical = False
+    
+            if Player1Input == "" or Player2Input == "":
+                print("Blank names not allowed")
+                namesEmpty = True
+            else:
+                namesEmpty = False
+  
+    
+        self._Players.append(Player(Player1Input, 1))
+        self._Players.append(Player(Player2Input, 1))
+  
 
     def __DisplayBoard(self):
         print("\n" + "   ", end="")
@@ -55,9 +70,7 @@ class Dastan:
                 if PieceInSquare is None:
                     print(" ", end="")
                 else:
-
                     print(PieceInSquare.GetSymbol(), end="")
-
             print("|")
         print("  -", end="")
         for Column in range(1, self._NoOfColumns + 1):
@@ -215,11 +228,35 @@ class Dastan:
         self._Board[self.__GetIndexOfSquare(self._NoOfRows * 10 + (self._NoOfColumns // 2 + 1))].SetPiece(CurrentPiece)
 
     def __CreateMoveOptionOffer(self):
+
         self._MoveOptionOffer.append("jazair")
         self._MoveOptionOffer.append("chowkidar")
         self._MoveOptionOffer.append("cuirassier")
         self._MoveOptionOffer.append("ryott")
         self._MoveOptionOffer.append("faujdar")
+        self._MoveOptionOffer.append("faris")
+
+    def __CreateFarisMoveOptionOffer(self,Direction):
+        NewMoveOption = MoveOption("faris")
+        NewMove = Move(1 * Direction, 2 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(2 * Direction, 1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(2 * Direction, -1* Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(1 * Direction, -2 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(-1 * Direction, -2 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(-2 * Direction, -1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(-2 * Direction, 1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(-1 * Direction, 2 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        return NewMoveOption
+      
+        
 
     def __CreateRyottMoveOption(self, Direction):
         NewMoveOption = MoveOption("ryott")
@@ -300,20 +337,26 @@ class Dastan:
             return self.__CreateFaujdarMoveOption(Direction)
         elif Name == "jazair":
             return self.__CreateJazairMoveOption(Direction)
+        elif Name == "faris":
+          return self.__CreateFarisMoveOptionOffer(Direction)
         else:
             return self.__CreateCuirassierMoveOption(Direction)
 
     def __CreateMoveOptions(self):
+        self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faris", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("ryott", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("chowkidar", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", 1))
+
+        self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faris", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("ryott", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("chowkidar", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", -1))
+
 
 class Piece:
     def __init__(self, T, B, P, S):
@@ -486,10 +529,6 @@ class Player:
     def CheckPlayerMove(self, Pos, StartSquareReference, FinishSquareReference):
         Temp = self.__Queue.GetMoveOptionInPosition(Pos - 1)
         return Temp.CheckIfThereIsAMoveToSquare(StartSquareReference, FinishSquareReference)
-
-def Introduction():
-  """ Summary: Introduces the program to the user """
-  
 
 def Main():
     ThisGame = Dastan(6, 6, 4)
