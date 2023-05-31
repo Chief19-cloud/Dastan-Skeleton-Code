@@ -1,58 +1,48 @@
 #Skeleton Program code for the AQA A Level Paper 1 Summer 2023 examination
+
 #this code should be used in conjunction with the Preliminary Material
 #written by the AQA Programmer Team
-#developed in the Python 3.9 programming environment
+#developed in the Python 3.9 programming environment;:~|@%*~;
 
 import random
 
 class Dastan:
+
     def __init__(self, R, C, NoOfPieces):
         self._Board = []
         self._Players = []
         self._MoveOptionOffer = []
-        self.CreateCustomPlayers()
       
-        # self._Players.append(Player("Player One", 1))
-        # self._Players.append(Player("Player Two", -1))
+        self.CreateCustomPlayers() # 1
+        
         self.__CreateMoveOptions()
         self._NoOfRows = R
         self._NoOfColumns = C
         self._MoveOptionOfferPosition = 0
         self.__CreateMoveOptionOffer()
+
         self.__CreateBoard()
         self.__CreatePieces(NoOfPieces)
         self._CurrentPlayer = self._Players[0]
 
-
+    """ Dastan Task 1 """
+  
     def CreateCustomPlayers(self):
-    
-        Player1Input = ""
-        Player2Input = ""
+      User1Input = ""
+      User2Input = ""
+      
+      while User1Input == User2Input:
 
-        namesIdentical = True
-        namesEmpty = True
-    
-        while namesIdentical == True or namesEmpty == True:
-            Player1Input = input("Player 1, enter your name: ")
-            Player2Input = input("Player 2, enter your name: ")
-  
-            if Player1Input == Player2Input:
-                namesIdentical = True
-                print("Identical names not allowed")
-            else:
-                namesIdentical = False
-    
-            if Player1Input == "" or Player2Input == "":
-                print("Blank names not allowed")
-                namesEmpty = True
-            else:
-                namesEmpty = False
-  
-    
-        self._Players.append(Player(Player1Input, 1))
-        self._Players.append(Player(Player2Input, 1))
-  
+        User1Input = input(f"\n User 1, Enter your player name: ")
+        User2Input = input(f"\n User 2, Enter your player name: ")
+        
+      print(f"\n Welcome, {User1Input} and {User2Input} to Dastan! Let's Commence!")
 
+      self._Players.append(Player(User1Input, 1))
+      self._Players.append(Player(User2Input, -1))
+
+    """ Dastan Task 1 """
+  
     def __DisplayBoard(self):
         print("\n" + "   ", end="")
         for Column in range(1, self._NoOfColumns + 1):
@@ -70,7 +60,9 @@ class Dastan:
                 if PieceInSquare is None:
                     print(" ", end="")
                 else:
+
                     print(PieceInSquare.GetSymbol(), end="")
+
             print("|")
         print("  -", end="")
         for Column in range(1, self._NoOfColumns + 1):
@@ -228,35 +220,16 @@ class Dastan:
         self._Board[self.__GetIndexOfSquare(self._NoOfRows * 10 + (self._NoOfColumns // 2 + 1))].SetPiece(CurrentPiece)
 
     def __CreateMoveOptionOffer(self):
-
         self._MoveOptionOffer.append("jazair")
         self._MoveOptionOffer.append("chowkidar")
         self._MoveOptionOffer.append("cuirassier")
         self._MoveOptionOffer.append("ryott")
         self._MoveOptionOffer.append("faujdar")
+      #2
         self._MoveOptionOffer.append("faris")
-
-    def __CreateFarisMoveOptionOffer(self,Direction):
-        NewMoveOption = MoveOption("faris")
-        NewMove = Move(1 * Direction, 2 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(2 * Direction, 1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(2 * Direction, -1* Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(1 * Direction, -2 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(-1 * Direction, -2 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(-2 * Direction, -1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(-2 * Direction, 1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(-1 * Direction, 2 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        return NewMoveOption
+      #3
+        self._MoveOptionOffer.append("sarukh")
       
-        
 
     def __CreateRyottMoveOption(self, Direction):
         NewMoveOption = MoveOption("ryott")
@@ -328,6 +301,56 @@ class Dastan:
         NewMoveOption.AddToPossibleMoves(NewMove)
         return NewMoveOption
 
+    """ Dastan Task 2 """
+    def __CreateFarisMoveOption(self,Direction):
+        NewMoveOption = MoveOption("faris")
+        
+        NewMove = Move(2 * Direction, 1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(2 * Direction, -1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+
+        NewMove = Move(-2 * Direction, 1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(-2 * Direction, -1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+
+        NewMove = Move(1 * Direction, 2 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(1 * Direction, -2 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+
+        NewMove = Move(-1 * Direction, 2 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(-1 * Direction, -2 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+
+        return NewMoveOption
+
+    """ Dastan Task 2 """
+
+    """ Dastan Task 3 """
+    def __CreateSarukhMoveOption(self,Direction):
+        NewMoveOption = MoveOption("sarukh")
+
+        NewMove = Move(2 * Direction, 0 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+
+        NewMove = Move(1 * Direction, 1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(1 * Direction, -1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+
+        NewMove = Move(0 * Direction, 1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+        NewMove = Move(0 * Direction, -1 * Direction)
+        NewMoveOption.AddToPossibleMoves(NewMove)
+
+        return NewMoveOption
+      
+    """ Dastan Task 3"""
+
+  
     def __CreateMoveOption(self, Name, Direction):
         if Name == "chowkidar":
             return self.__CreateChowkidarMoveOption(Direction)
@@ -338,25 +361,34 @@ class Dastan:
         elif Name == "jazair":
             return self.__CreateJazairMoveOption(Direction)
         elif Name == "faris":
-          return self.__CreateFarisMoveOptionOffer(Direction)
+            return self.__CreateFarisMoveOption(Direction)
+        elif Name == "sarukh":
+            return self.__CreateSarukhMoveOption(Direction)
         else:
             return self.__CreateCuirassierMoveOption(Direction)
 
     def __CreateMoveOptions(self):
-        self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faris", 1))
+
+      
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("ryott", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("chowkidar", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", 1))
+        #2
+        self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faris", 1))
+        #3
+        self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("sarukh", 1))
 
-        self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faris", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("ryott", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("chowkidar", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", -1))
-
+        #2
+        self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faris", -1))
+        #3
+        self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faris", -1))
 
 class Piece:
     def __init__(self, T, B, P, S):
@@ -529,6 +561,10 @@ class Player:
     def CheckPlayerMove(self, Pos, StartSquareReference, FinishSquareReference):
         Temp = self.__Queue.GetMoveOptionInPosition(Pos - 1)
         return Temp.CheckIfThereIsAMoveToSquare(StartSquareReference, FinishSquareReference)
+
+def Introduction():
+  """ Summary: Introduces the program to the user """
+  
 
 def Main():
     ThisGame = Dastan(6, 6, 4)
