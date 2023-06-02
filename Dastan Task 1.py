@@ -1,5 +1,7 @@
 #Skeleton Program code for the AQA A Level Paper 1 Summer 2023 examination
 
+
+
 #this code should be used in conjunction with the Preliminary Material
 #written by the AQA Programmer Team
 #developed in the Python 3.9 programming environment;:~|@%*~;
@@ -139,9 +141,7 @@ class Dastan:
         """ Dastan Task 6 """
 
     def __UseMoveOptionOffer(self):
-
       """ Dastan Task 6 """
-      
       while True:
         try:
           ReplaceChoice = int(input("Choose the move option from your queue to replace (1 to 5): "))
@@ -150,10 +150,10 @@ class Dastan:
           self.__CreateMoveOption(self._MoveOptionOffer[self._MoveOptionOfferPosition], self._CurrentPlayer.GetDirection()))
           self._CurrentPlayer.ChangeScore(-(10 - (ReplaceChoice * 2)))
           self._MoveOptionOfferPosition = random.randint(0, 4)
+          self._CurrentPlayer.DecreaseChoiceOptionsLeft()
           break
         except ValueError:
           print(f"\n You entered an invalid input. Please try again.")
-          
       """ Dastan Task 6 """
 
     def __GetPointsForOccupancyByPlayer(self, CurrentPlayer):
@@ -191,8 +191,13 @@ class Dastan:
               try:
                 Choice = int(input("Choose move option to use from queue (1 to 3) or 9 to take the offer: "))
                 if Choice == 9:
-                    self.__UseMoveOptionOffer()
+                  """ Dastan Task 7 """
+                  if self._CurrentPlayer._Player__ChoiceOptionsLeft != 0:
+                    self.__UseMoveOptionOffer() 
                     self.__DisplayState()
+                    self._CurrentPlayer.GetChoiceOptionsLeft()
+                  else:
+                    print(f"\n You have used up All your Switch offers available to you for the game. Sorry!")
               except ValueError:
                 print(f"\n You entered an invalid number. Please try again.")
             while not SquareIsValid:
@@ -558,18 +563,29 @@ class Player:
         self.__Name = N
         self.__Direction = D
         self.__Queue = MoveOptionQueue()
-      
-        """ Dastan Task 4 """
+
+        #7
+        self.__ChoiceOptionsLeft = 3
+    
         #4 
         self.__WafrAwarded = False
-
+      
+    """ Dastan Task 4 """
     def GetWafrAwarded(self):
       return self.__WafrAwarded 
 
     def SetWafrAwarded(self, Condition):
       self.__WafrAwarded = Condition
-
     """ Dastan Task 4 """
+
+    """ Dastan Task 7 """
+    def GetChoiceOptionsLeft(self):
+      print(f"\n You have {self.__ChoiceOptionsLeft} switch offers remaining...")
+
+    def DecreaseChoiceOptionsLeft(self):
+      self.__ChoiceOptionsLeft -= 1
+      self.GetChoiceOptionsLeft()
+    """ Dastan Task 7  """
   
     def SameAs(self, APlayer):
         if APlayer is None:
