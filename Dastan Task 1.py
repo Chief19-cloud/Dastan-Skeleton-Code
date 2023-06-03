@@ -174,8 +174,7 @@ class Dastan:
 
     def AwardWafr(self):
       Chance = random.randint(1,4)
-      if Chance == 3:
-        return Chance
+      return Chance == 3
 
     """ Dastan Task 5 """
   
@@ -184,12 +183,27 @@ class Dastan:
         while not GameOver:
             self.__DisplayState()
           # Call AwardWafr method()
+
+            """ Dastan Task 4 """
             SquareIsValid = False
             Choice = 0
+            MaxOptions = 3
+            ScoreMultiplier = 1
+
+            if self.AwardWafr() and not self._CurrentPlayer.GetWafrAwarded():
+                print(f"\n You just received a Wafr! ")
+                MaxOptions = 10
+                ScoreMultiplier = 0
+                self._CurrentPlayer.SetWafrAwarded(True)
+            else:
+              pass
+
+            """ Dastan Task 4 """
             
-            while Choice < 1 or Choice > 3:
+            while Choice < 1 or Choice > MaxOptions:
               try:
-                Choice = int(input("Choose move option to use from queue (1 to 3) or 9 to take the offer: "))
+                Choice = int(input("Choose move option to use from queue (1 to 3), 8 to view the Opponent's deck or 9 to take the offer: ")) 
+                
                 if Choice == 9:
                   """ Dastan Task 7 """
                   if self._CurrentPlayer._Player__ChoiceOptionsLeft != 0:
@@ -198,8 +212,20 @@ class Dastan:
                     self._CurrentPlayer.GetChoiceOptionsLeft()
                   else:
                     print(f"\n You have used up All your Switch offers available to you for the game. Sorry!")
+
+                if Choice ==  8:
+                  self._CurrentPlayer.ChangeScore(-5 * ScoreMultiplier)
+                  if Player._CurrentPlayer.SameAs(self._Players[0]):
+                    Player._CurrentPlayer = self._Players[1]
+                    Player._CurrentPlayer.ChangeScore(-5 * ScoreMultiplier)
+                    Player.__DisplayState()
+                  else:  
+                    self._CurrentPlayer = self._Players[0]
+
+              
               except ValueError:
                 print(f"\n You entered an invalid number. Please try again.")
+                
             while not SquareIsValid:
                 StartSquareReference = self.__GetSquareReference("containing the piece to move")
                 SquareIsValid = self.__CheckSquareIsValid(StartSquareReference, True)
@@ -210,7 +236,7 @@ class Dastan:
             MoveLegal = self._CurrentPlayer.CheckPlayerMove(Choice, StartSquareReference, FinishSquareReference)
             if MoveLegal:
                 PointsForPieceCapture = self.__CalculatePieceCapturePoints(FinishSquareReference)
-                self._CurrentPlayer.ChangeScore(-(Choice + (2 * (Choice - 1))))
+                self._CurrentPlayer.ChangeScore(-(Choice + (2 * (Choice - 1) * ScoreMultiplier)))
                 self._CurrentPlayer.UpdateQueueAfterMove(Choice)
                 self.__UpdateBoard(StartSquareReference, FinishSquareReference)
                 self.__UpdatePlayerScore(PointsForPieceCapture)
@@ -581,6 +607,11 @@ class Player:
     """ Dastan Task 7 """
     def GetChoiceOptionsLeft(self):
       print(f"\n You have {self.__ChoiceOptionsLeft} switch offers remaining...")
+
+    """ Dastan Task 5 """
+    def GetJustQueue(self):
+      return self._CurrentPlayer.GetQueueAsString()
+    """ Dastan Task 5 """
 
     def DecreaseChoiceOptionsLeft(self):
       self.__ChoiceOptionsLeft -= 1
