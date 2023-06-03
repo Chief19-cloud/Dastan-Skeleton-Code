@@ -215,12 +215,12 @@ class Dastan:
 
                 if Choice ==  8:
                   self._CurrentPlayer.ChangeScore(-5 * ScoreMultiplier)
-                  if Player._CurrentPlayer.SameAs(self._Players[0]):
-                    Player._CurrentPlayer = self._Players[1]
-                    Player._CurrentPlayer.ChangeScore(-5 * ScoreMultiplier)
-                    Player.__DisplayState()
+                  if self._CurrentPlayer.SameAs(self._Players[0]):
+                    print(f"\n {self._Players[0].GetJustQueue()}")
+                    print("New score: " + str(self._CurrentPlayer.GetScore())) 
                   else:  
-                    self._CurrentPlayer = self._Players[0]
+                    print(f"\n {self._Players[1].GetJustQueue()}")
+                    print("New score: " + str(self._CurrentPlayer.GetScore()))
 
               
               except ValueError:
@@ -610,7 +610,7 @@ class Player:
 
     """ Dastan Task 5 """
     def GetJustQueue(self):
-      return self._CurrentPlayer.GetQueueAsString()
+      return self.__Queue.GetQueueAsString()
     """ Dastan Task 5 """
 
     def DecreaseChoiceOptionsLeft(self):
