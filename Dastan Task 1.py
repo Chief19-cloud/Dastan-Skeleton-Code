@@ -1,49 +1,70 @@
 #Skeleton Program code for the AQA A Level Paper 1 Summer 2023 examination
-
-
-
 #this code should be used in conjunction with the Preliminary Material
 #written by the AQA Programmer Team
-#developed in the Python 3.9 programming environment;:~|@%*~;
-
+#developed in the Python 3.9 programming environment
 import random
 
 class Dastan:
-
     def __init__(self, R, C, NoOfPieces):
         self._Board = []
         self._Players = []
         self._MoveOptionOffer = []
+
+        self._Players.append(Player("Player One", 1))
+        self._Players.append(Player("Player Two", -1))
       
-        self.CreateCustomPlayers() # 1
-        
         self.__CreateMoveOptions()
         self._NoOfRows = R
         self._NoOfColumns = C
         self._MoveOptionOfferPosition = 0
         self.__CreateMoveOptionOffer()
-
         self.__CreateBoard()
         self.__CreatePieces(NoOfPieces)
         self._CurrentPlayer = self._Players[0]
 
     """ Dastan Task 1 """
   
-    def CreateCustomPlayers(self):
-      User1Input = ""
-      User2Input = ""
+    """ 
+
+    def __init__(self, R, C, NoOfPieces):
+        self._Board = []
+        self._Players = []
+        self._MoveOptionOffer = []
+        # self._Players.append(Player("Player One", 1))
+        # self._Players.append(Player("Player Two", -1))
+        self.CreateCustomPlayers()
       
-      while User1Input == User2Input:
+        self.__CreateMoveOptions()
+        self._NoOfRows = R
+        self._NoOfColumns = C
+        self._MoveOptionOfferPosition = 0
+        self.__CreateMoveOptionOffer()
+        self.__CreateBoard()
+        self.__CreatePieces(NoOfPieces)
+        self._CurrentPlayer = self._Players[0]
 
-        User1Input = input(f"\n User 1, Enter your player name: ")
-        User2Input = input(f"\n User 2, Enter your player name: ")
-        
-      print(f"\n Welcome, {User1Input} and {User2Input} to Dastan! Let's Commence!")
+    def CreateCustomPlayers(self):
+  
+      Username1 = ""
+      Username2 = ""
 
-      self._Players.append(Player(User1Input, 1))
-      self._Players.append(Player(User2Input, -1))
+      while Username1 == Username2:
+        Username1 = input(f"\n Enter your name Player 1: ")
+        Username2 = input(f"\n Enter your name Player 2: ")
+      
+      self._Players.append(Player(Username1, 1))
+      self._Players.append(Player(Username2, -1)) 
 
-    """ Dastan Task 1 """
+    """
+    """ Dastan Task 1"""
+
+    """ Dastan Task 4"""
+
+    def AwardWafr(self):
+      return random.randint(0,4) == 3
+
+    """ Dastan Task 4 """
+
   
     def __DisplayBoard(self):
         print("\n" + "   ", end="")
@@ -62,9 +83,7 @@ class Dastan:
                 if PieceInSquare is None:
                     print(" ", end="")
                 else:
-
                     print(PieceInSquare.GetSymbol(), end="")
-
             print("|")
         print("  -", end="")
         for Column in range(1, self._NoOfColumns + 1):
@@ -130,31 +149,14 @@ class Dastan:
         return not (Player1HasMirza and Player2HasMirza)
 
     def __GetSquareReference(self, Description):
-        """ Dastan Task 6 """
-        while True:
-          try:
-            SelectedSquare = int(input("Enter the square " + Description + " (row number followed by column number): "))
-            return SelectedSquare
-            break
-          except ValueError:
-            print(f"\n You entered an invalid square. Please try again")
-        """ Dastan Task 6 """
+        SelectedSquare = int(input("Enter the square " + Description + " (row number followed by column number): "))
+        return SelectedSquare
 
     def __UseMoveOptionOffer(self):
-      """ Dastan Task 6 """
-      while True:
-        try:
-          ReplaceChoice = int(input("Choose the move option from your queue to replace (1 to 5): "))
-          self._CurrentPlayer.UpdateMoveOptionQueueWithOffer
-          (ReplaceChoice - 1,         
-          self.__CreateMoveOption(self._MoveOptionOffer[self._MoveOptionOfferPosition], self._CurrentPlayer.GetDirection()))
-          self._CurrentPlayer.ChangeScore(-(10 - (ReplaceChoice * 2)))
-          self._MoveOptionOfferPosition = random.randint(0, 4)
-          self._CurrentPlayer.DecreaseChoiceOptionsLeft()
-          break
-        except ValueError:
-          print(f"\n You entered an invalid input. Please try again.")
-      """ Dastan Task 6 """
+        ReplaceChoice = int(input("Choose the move option from your queue to replace (1 to 5): "))
+        self._CurrentPlayer.UpdateMoveOptionQueueWithOffer(ReplaceChoice - 1, self.__CreateMoveOption(self._MoveOptionOffer[self._MoveOptionOfferPosition], self._CurrentPlayer.GetDirection()))
+        self._CurrentPlayer.ChangeScore(-(10 - (ReplaceChoice * 2)))
+        self._MoveOptionOfferPosition = random.randint(0, 4)
 
     def __GetPointsForOccupancyByPlayer(self, CurrentPlayer):
         ScoreAdjustment = 0
@@ -170,62 +172,46 @@ class Dastan:
             return self._Board[self.__GetIndexOfSquare(FinishSquareReference)].GetPieceInSquare().GetPointsIfCaptured()
         return 0
 
-    """ Dastan Task 4 """
-
-    def AwardWafr(self):
-      Chance = random.randint(1,4)
-      return Chance == 3
-
-    """ Dastan Task 5 """
-  
     def PlayGame(self):
         GameOver = False
         while not GameOver:
             self.__DisplayState()
-          # Call AwardWafr method()
-
-            """ Dastan Task 4 """
             SquareIsValid = False
             Choice = 0
-            MaxOptions = 3
-            ScoreMultiplier = 1
-
+            MaxOptions = 10
+            # ScoreMultiplier = 1
+            
+ 
+            """ Dastan Task 4 """
+            """
             if self.AwardWafr() and not self._CurrentPlayer.GetWafrAwarded():
-                print(f"\n You just received a Wafr! ")
-                MaxOptions = 10
-                ScoreMultiplier = 0
-                self._CurrentPlayer.SetWafrAwarded(True)
-            else:
-              pass
-
+              print(f"\n CONGRATULATIONS! YOU HAVE BEEN AWARDED A WAFR! \n YOU CAN SLEECT ANY MOVE FROM YOUR QUEUE FOR ",
+                   "FOR FREE THIS TURN!")
+              MaxOptions = 10
+              ScoreMultiplier = 0
+              self._CurrentPlayer.SetWafrAwarded(True)
+            """
             """ Dastan Task 4 """
             
             while Choice < 1 or Choice > MaxOptions:
-              try:
-                Choice = int(input("Choose move option to use from queue (1 to 3), 8 to view the Opponent's deck or 9 to take the offer: ")) 
-                
+                Choice = int(input("Choose move option to use from queue (1 to 3 ) 8 to view enemy Queue or 9 to take the offer: "))
                 if Choice == 9:
-                  """ Dastan Task 7 """
-                  if self._CurrentPlayer._Player__ChoiceOptionsLeft != 0:
-                    self.__UseMoveOptionOffer() 
+                    self.__UseMoveOptionOffer()
                     self.__DisplayState()
-                    self._CurrentPlayer.GetChoiceOptionsLeft()
-                  else:
-                    print(f"\n You have used up All your Switch offers available to you for the game. Sorry!")
-
-                if Choice ==  8:
-                  self._CurrentPlayer.ChangeScore(-5 * ScoreMultiplier)
+                  
+                """ Dastan Task 5 """ 
+                if Choice == 8:
+                  self._CurrentPlayer.ChangeScore(-(5))
                   if self._CurrentPlayer.SameAs(self._Players[0]):
-                    print(f"\n {self._Players[0].GetJustQueue()}")
-                    print("New score: " + str(self._CurrentPlayer.GetScore())) 
-                  else:  
-                    print(f"\n {self._Players[1].GetJustQueue()}")
-                    print("New score: " + str(self._CurrentPlayer.GetScore()))
-
-              
-              except ValueError:
-                print(f"\n You entered an invalid number. Please try again.")
-                
+                     self._CurrentPlayer = self._Players[0] 
+                     print(f"\n {self._CurrentPlayer.GetJustQueue()} ")
+                     print("New score: " + str(self._CurrentPlayer.GetScore()) + "\n")
+                  else:
+                      self._CurrentPlayer = self._Players[1] 
+                      print(f"\n {self._CurrentPlayer.GetJustQueue()} ")
+                      print("New score: " + str(self._CurrentPlayer.GetScore()) + "\n")
+                  
+                """ Dastan Task 5 """
             while not SquareIsValid:
                 StartSquareReference = self.__GetSquareReference("containing the piece to move")
                 SquareIsValid = self.__CheckSquareIsValid(StartSquareReference, True)
@@ -235,12 +221,28 @@ class Dastan:
                 SquareIsValid = self.__CheckSquareIsValid(FinishSquareReference, False)
             MoveLegal = self._CurrentPlayer.CheckPlayerMove(Choice, StartSquareReference, FinishSquareReference)
             if MoveLegal:
+                """ Dastan Task 8 """
+                PlayerScore = self._CurrentPlayer.GetScore()
+
+                Undo = int(input(f"\n Would you like to Continue [1] or Undo your Move [2] ? "))
+              
                 PointsForPieceCapture = self.__CalculatePieceCapturePoints(FinishSquareReference)
-                self._CurrentPlayer.ChangeScore(-(Choice + (2 * (Choice - 1) * ScoreMultiplier)))
+                self._CurrentPlayer.ChangeScore(-(Choice + (2 * (Choice - 1))))
+                # self._CurrentPlayer.ChangeScore(-(Choice + (2 * (Choice - 1))) * ScoreMultiplier)
                 self._CurrentPlayer.UpdateQueueAfterMove(Choice)
                 self.__UpdateBoard(StartSquareReference, FinishSquareReference)
-                self.__UpdatePlayerScore(PointsForPieceCapture)
-                print("New score: " + str(self._CurrentPlayer.GetScore()) + "\n")
+              
+                if Undo == 1:
+                  self.__UpdatePlayerScore(PointsForPieceCapture)
+                  print("New score: " + str(self._CurrentPlayer.GetScore()) + "\n")
+                  
+                else:
+                  Difference = self._CurrentPlayer.GetScore() - PlayerScore
+                  self._CurrentPlayer.ChangeScore(-(Difference + 5))
+                  self._CurrentPlayer.ResetQueueBackAfterUndo(Choice)
+                  self.__UpdateBoard(FinishSquareReference, StartSquareReference)
+                  
+                
             if self._CurrentPlayer.SameAs(self._Players[0]):
                 self._CurrentPlayer = self._Players[1]
             else:
@@ -263,9 +265,9 @@ class Dastan:
     def __CreateBoard(self):
         for Row in range(1, self._NoOfRows + 1):
             for Column in range(1, self._NoOfColumns + 1):
-                if Row == 1 and Column == self._NoOfColumns // 2:
+                if Row == 1 and Column == (self._NoOfColumns + 1) // 2:
                     S = Kotla(self._Players[0], "K")
-                elif Row == self._NoOfRows and Column == self._NoOfColumns // 2 + 1:
+                elif Row == self._NoOfRows and Column == (self._NoOfColumns + 1) // 2:
                     S = Kotla(self._Players[1], "k")
                 else:
                     S = Square()
@@ -289,11 +291,6 @@ class Dastan:
         self._MoveOptionOffer.append("cuirassier")
         self._MoveOptionOffer.append("ryott")
         self._MoveOptionOffer.append("faujdar")
-      #2
-        self._MoveOptionOffer.append("faris")
-      #3
-        self._MoveOptionOffer.append("sarukh")
-      
 
     def __CreateRyottMoveOption(self, Direction):
         NewMoveOption = MoveOption("ryott")
@@ -365,56 +362,6 @@ class Dastan:
         NewMoveOption.AddToPossibleMoves(NewMove)
         return NewMoveOption
 
-    """ Dastan Task 2 """
-    def __CreateFarisMoveOption(self,Direction):
-        NewMoveOption = MoveOption("faris")
-        
-        NewMove = Move(2 * Direction, 1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(2 * Direction, -1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-
-        NewMove = Move(-2 * Direction, 1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(-2 * Direction, -1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-
-        NewMove = Move(1 * Direction, 2 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(1 * Direction, -2 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-
-        NewMove = Move(-1 * Direction, 2 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(-1 * Direction, -2 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-
-        return NewMoveOption
-
-    """ Dastan Task 2 """
-
-    """ Dastan Task 3 """
-    def __CreateSarukhMoveOption(self,Direction):
-        NewMoveOption = MoveOption("sarukh")
-
-        NewMove = Move(2 * Direction, 0 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-
-        NewMove = Move(1 * Direction, 1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(1 * Direction, -1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-
-        NewMove = Move(0 * Direction, 1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-        NewMove = Move(0 * Direction, -1 * Direction)
-        NewMoveOption.AddToPossibleMoves(NewMove)
-
-        return NewMoveOption
-      
-    """ Dastan Task 3"""
-
-  
     def __CreateMoveOption(self, Name, Direction):
         if Name == "chowkidar":
             return self.__CreateChowkidarMoveOption(Direction)
@@ -424,35 +371,21 @@ class Dastan:
             return self.__CreateFaujdarMoveOption(Direction)
         elif Name == "jazair":
             return self.__CreateJazairMoveOption(Direction)
-        elif Name == "faris":
-            return self.__CreateFarisMoveOption(Direction)
-        elif Name == "sarukh":
-            return self.__CreateSarukhMoveOption(Direction)
         else:
             return self.__CreateCuirassierMoveOption(Direction)
 
     def __CreateMoveOptions(self):
-
-      
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("ryott", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("chowkidar", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", 1))
         self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", 1))
-        #2
-        self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("faris", 1))
-        #3
-        self._Players[0].AddToMoveOptionQueue(self.__CreateMoveOption("sarukh", 1))
-
+      
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("ryott", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("chowkidar", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("jazair", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faujdar", -1))
         self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("cuirassier", -1))
-        #2
-        self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("faris", -1))
-        #3
-        self._Players[1].AddToMoveOptionQueue(self.__CreateMoveOption("sarukh", -1))
 
 class Piece:
     def __init__(self, T, B, P, S):
@@ -561,6 +494,12 @@ class MoveOptionQueue:
     def __init__(self):
         self.__Queue = []
 
+    """ Dastan Task 8 """
+    def ResetQueueBack(self,Position):
+      LastPosition = self.__Queue.pop()
+      self.__Queue.insert(Position,LastPosition)
+    """ Dastan Task 8"""
+
     def GetQueueAsString(self):
         QueueAsString = ""
         Count = 1
@@ -581,7 +520,7 @@ class MoveOptionQueue:
         self.__Queue.append(Temp)
 
     def GetMoveOptionInPosition(self, Pos):
-        return self.__Queue[Pos]
+        return self.__Queue[Pos] # Returns the Position number of a Move option in the Queue list
 
 class Player:
     def __init__(self, N, D):
@@ -589,35 +528,23 @@ class Player:
         self.__Name = N
         self.__Direction = D
         self.__Queue = MoveOptionQueue()
-
-        #7
-        self.__ChoiceOptionsLeft = 3
-    
-        #4 
-        self.__WafrAwarded = False
       
-    """ Dastan Task 4 """
+        """ Dastan Task 4 """
+        """
+        self.WafrAwarded = False
+
     def GetWafrAwarded(self):
-      return self.__WafrAwarded 
-
+      return self.WafrAwarded
     def SetWafrAwarded(self, Condition):
-      self.__WafrAwarded = Condition
+      self.WafrAwarded = Condition
+    """
     """ Dastan Task 4 """
 
-    """ Dastan Task 7 """
-    def GetChoiceOptionsLeft(self):
-      print(f"\n You have {self.__ChoiceOptionsLeft} switch offers remaining...")
+    """ Dastan Task 8 """
+    def ResetQueueBackAfterUndo(self,Position):
+      self.__Queue.ResetQueueBack(Position - 1)
 
-    """ Dastan Task 5 """
-    def GetJustQueue(self):
-      return self.__Queue.GetQueueAsString()
-    """ Dastan Task 5 """
-
-    def DecreaseChoiceOptionsLeft(self):
-      self.__ChoiceOptionsLeft -= 1
-      self.GetChoiceOptionsLeft()
-    """ Dastan Task 7  """
-  
+    """ Dastan Task 8"""
     def SameAs(self, APlayer):
         if APlayer is None:
             return False
@@ -626,10 +553,19 @@ class Player:
         else:
             return False
 
+    """ Dastan Task 5 """
+    def GetJustQueue(self):
+      return self.__Queue.GetQueueAsString()
+    """ Dastan Task 5 """
+
     def GetPlayerStateAsString(self):
         return self.__Name + "\n" + "Score: " + str(self.__Score) + "\n" + "Move option queue: " + self.__Queue.GetQueueAsString() + "\n"
 
     def AddToMoveOptionQueue(self, NewMoveOption):
+        # if self._currentplayer = self._players[0]:
+        # NewMoveOption = 1
+        # else:
+        # NewMoveOption = -1
         self.__Queue.Add(NewMoveOption)
 
     def UpdateQueueAfterMove(self, Position):
@@ -653,10 +589,6 @@ class Player:
     def CheckPlayerMove(self, Pos, StartSquareReference, FinishSquareReference):
         Temp = self.__Queue.GetMoveOptionInPosition(Pos - 1)
         return Temp.CheckIfThereIsAMoveToSquare(StartSquareReference, FinishSquareReference)
-
-def Introduction():
-  """ Summary: Introduces the program to the user """
-  
 
 def Main():
     ThisGame = Dastan(6, 6, 4)
